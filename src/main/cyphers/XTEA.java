@@ -1,8 +1,11 @@
-package main;
+package main.cyphers;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
+
+import main.FeistelCypher;
+import main.FeistelCypherType;
 
 /**
  * Feistel cypher based XTEA
@@ -41,7 +44,7 @@ public class XTEA extends FeistelCypher {
 		} else if (keybyte.length < 16) {
 			byte[] newkey = new byte[16];
 			for (int i = 0; i < 16; i++) {
-				newkey[i] = keybyte[i % 16];
+				newkey[i] = keybyte[i % keybyte.length];
 			}
 			keybyte = newkey;
 		}
@@ -63,7 +66,7 @@ public class XTEA extends FeistelCypher {
 
 		int i, v0, v1, sum, n;
 		i = 0;
-		while (i < intText.length) {
+		while (i < intText.length-1) {
 			n = numCycles;
 			v0 = intText[i];
 			v1 = intText[i + 1];
@@ -86,7 +89,7 @@ public class XTEA extends FeistelCypher {
 
 		int i, v0, v1, sum, n;
 		i = 0;
-		while (i < intText.length) {
+		while (i < intText.length-1) {
 			n = numCycles;
 			v0 = intText[i];
 			v1 = intText[i + 1];
@@ -104,5 +107,4 @@ public class XTEA extends FeistelCypher {
 		return new String(int2byte(intText));
 	}
 
-	
 }

@@ -1,5 +1,7 @@
 package main;
 
+import main.cyphers.XTEA;
+
 public class FeistelCypherFactory {
 
 	public static FeistelCypher getFeistelCypher(FeistelCypherType type) {
