@@ -6,7 +6,7 @@ import main.FeistelCypherType;
 
 public class Test {
 	/* Simple usage example */
-	public static String quote = "OLA K ASE";
+	public static String quote = "123";
 
 	public static void main(String[] args) {
 		
@@ -17,6 +17,7 @@ public class Test {
 
 		/* Run it through the cipher and back */
 		byte[] crypt = xtea.encrypt(quote);
+		
 		String result = xtea.decrypt(crypt);
 
 		/* Lets see that all went well */

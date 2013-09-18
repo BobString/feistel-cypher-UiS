@@ -22,8 +22,26 @@ public abstract class FeistelCypher {
 	}
 
 	protected int[] byte2int(byte[] source) {
-		IntBuffer intBuf = ByteBuffer.wrap(source).order(ByteOrder.BIG_ENDIAN)
-				.asIntBuffer();
+		int rest = source.length % 4;
+		byte[] fixArray;
+		if (rest != 0) {
+			fixArray = new byte[source.length + (4 - rest)];
+			byte b1 = " ".getBytes()[0];
+			int fixLength = fixArray.length;
+			int sourceLength = source.length;
+			for (int i = 0; i < fixLength; i++) {
+				if (i < sourceLength) {
+					fixArray[i] = source[i];
+				} else {
+					fixArray[i] = b1;
+				}
+			}
+
+		} else {
+			fixArray = source;
+		}
+		IntBuffer intBuf = ByteBuffer.wrap(fixArray)
+				.order(ByteOrder.BIG_ENDIAN).asIntBuffer();
 		int[] array = new int[intBuf.remaining()];
 		intBuf.get(array);
 		return array;

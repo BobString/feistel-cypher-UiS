@@ -66,7 +66,7 @@ public class XTEA extends FeistelCypher {
 
 		int i, v0, v1, sum, n;
 		i = 0;
-		while (i < intText.length-1) {
+		while (i < intText.length - 1) {
 			n = numCycles;
 			v0 = intText[i];
 			v1 = intText[i + 1];
@@ -89,7 +89,7 @@ public class XTEA extends FeistelCypher {
 
 		int i, v0, v1, sum, n;
 		i = 0;
-		while (i < intText.length-1) {
+		while (i < intText.length - 1) {
 			n = numCycles;
 			v0 = intText[i];
 			v1 = intText[i + 1];
