@@ -1,5 +1,5 @@
 package main;
 
 public enum FeistelCypherType {
-	XTEA, XXTEA
+	TEA,XTEA, XXTEA
 }

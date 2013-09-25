@@ -19,8 +19,9 @@ public class UI {
 		/* Cypher typer */
 
 		System.out.println("Please enter number of cypher:");
-		System.out.println("  1.XTEA");
-		System.out.println("  2.XXTEA");
+		System.out.println("  1.TEA");
+		System.out.println("  2.XTEA");
+		System.out.println("  3.XXTEA");
 
 		String alg = null;
 		try {
@@ -39,16 +40,21 @@ public class UI {
 		switch (alg) {
 		case "1":
 			feistel = FeistelCypherFactory
-					.getFeistelCypher(FeistelCypherType.XTEA);
+					.getFeistelCypher(FeistelCypherType.TEA);
 			break;
 		case "2":
+			feistel = FeistelCypherFactory
+					.getFeistelCypher(FeistelCypherType.XTEA);
+			break;
+		case "3":
 			feistel = FeistelCypherFactory
 					.getFeistelCypher(FeistelCypherType.XXTEA);
 			break;
 		default:
 			feistel = FeistelCypherFactory
-					.getFeistelCypher(FeistelCypherType.XTEA);
+			.getFeistelCypher(FeistelCypherType.XTEA);
 			break;
+			
 		}
 
 		/* Key */
@@ -63,6 +69,7 @@ public class UI {
 
 		if (key == null) {
 			key = "Don't put the key null";
+			System.exit(0);
 		}
 		feistel.setKey(key);
 
