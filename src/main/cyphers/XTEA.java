@@ -8,7 +8,7 @@ import main.FeistelCypher;
 import main.FeistelCypherType;
 
 /**
- * Feistel cypher based XTEA
+ * Feistel cypher
  * 
  * @author roberto
  * 

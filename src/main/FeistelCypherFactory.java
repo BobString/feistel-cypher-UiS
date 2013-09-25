@@ -2,6 +2,7 @@ package main;
 
 import main.cyphers.TEA;
 import main.cyphers.XTEA;
+import main.cyphers.XXTEA;
 
 public class FeistelCypherFactory {
 
@@ -14,6 +15,7 @@ public class FeistelCypherFactory {
 			cypher = new XTEA();
 			break;
 		case XXTEA:
+			cypher = new XXTEA();
 			break;
 		}
 		return cypher;

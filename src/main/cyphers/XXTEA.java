@@ -7,11 +7,7 @@ import java.nio.IntBuffer;
 import main.FeistelCypher;
 import main.FeistelCypherType;
 
-/**
- * @author roberto
- *
- */
-public class TEA extends FeistelCypher{
+public class XXTEA extends FeistelCypher {
 
 	/**
 	 * 32 cycles = 64 feistel rounds
@@ -27,8 +23,8 @@ public class TEA extends FeistelCypher{
 	 */
 	private int delta = 0x9E3779B9;
 
-	public TEA() {
-		super(FeistelCypherType.TEA);
+	public XXTEA() {
+		super(FeistelCypherType.XXTEA);
 	}
 
 	/**
@@ -62,44 +58,51 @@ public class TEA extends FeistelCypher{
 	public byte[] encrypt(String plainText) {
 		byte[] text = plainText.getBytes();
 		int[] intText = byte2int(text);
-
-		int i, v0, v1, sum, n;
-		i = 0;
-		while (i < intText.length - 1) {
-			n = numCycles;
-			v0 = intText[i];
-			v1 = intText[i + 1];
-			sum = 0;
-			for (int ind = 0; ind < n; ind++) {
-				v0  += ((v1 << 4 ) + key[0] ^ v1) + (sum ^ (v1 >>> 5)) + key[1];
-				sum += delta;
-				v1  += ((v0 << 4 ) + key[2] ^ v0) + (sum ^ (v0 >>> 5)) + key[3];
+		if(intText.length < 2){
+			int[] aux = {intText[0],0};
+			intText = aux;
+		}
+		int sum, n, rounds, z, e, y, ind;
+		n = 2;
+		rounds = 6 + 52 / n;
+		z = intText[n - 1];
+		// v0 = intText[i];
+		// v1 = intText[i + 1];
+		sum = 0;
+		while (rounds > 0) {
+			sum += delta;
+			e = (sum >> 2) & 3;
+			for (ind = 0; ind < n - 1; ind++) {
+				y = intText[ind + 1];
+				z = intText[ind] += (((z >> 5 ^ y << 2) + (y >> 3 ^ z << 4)) ^ ((sum ^ y) + (key[(ind & 3)
+						^ e] ^ z)));
 			}
-			intText[i] = v0;
-			intText[i + 1] = v1;
-			i += 2;
+			y = intText[0];
+			z = intText[n - 1] += (((z >> 5 ^ y << 2) + (y >> 3 ^ z << 4)) ^ ((sum ^ y) + (key[(ind & 3)
+					^ e] ^ z)));
+			rounds--;
 		}
 		return int2byte(intText);
 	}
 
 	public String decrypt(byte[] encondeMessage) {
 		int[] intText = byte2int(encondeMessage);
-
-		int i, v0, v1, sum, n;
-		i = 0;
-		while (i < intText.length - 1) {
-			n = numCycles;
-			v0 = intText[i];
-			v1 = intText[i + 1];
-			sum = delta * numCycles;
-			for (int ind = 0; ind < n; ind++) {
-				v1  -= ((v0 << 4 ) + key[2] ^ v0) + (sum ^ (v0 >>> 5)) + key[3];
-				v0  -= ((v1 << 4 ) + key[0] ^ v1) + (sum ^ (v1 >>> 5)) + key[1];
-				sum -= delta;
+		int sum, n, rounds, z, e, y, ind;
+		n = 2;
+		rounds = 6 + 52 / n;
+		sum = rounds * delta;
+		y = intText[0];
+		while (sum != 0) {
+			e = (sum >> 2) & 3;
+			for (ind = n - 1; ind > 0; ind--) {
+				z = intText[ind - 1];
+				y = intText[ind] -= (((z >> 5 ^ y << 2) + (y >> 3 ^ z << 4)) ^ ((sum ^ y) + (key[(ind & 3)
+						^ e] ^ z)));
 			}
-			intText[i] = v0;
-			intText[i + 1] = v1;
-			i += 2;
+			z = intText[n - 1];
+			y = intText[0] -= (((z >> 5 ^ y << 2) + (y >> 3 ^ z << 4)) ^ ((sum ^ y) + (key[(ind & 3)
+					^ e] ^ z)));
+			sum -= delta;
 		}
 		return new String(int2byte(intText));
 	}
