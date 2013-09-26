@@ -11,8 +11,5 @@ A Feistel cipher has a typical structure that any implementation should use, but
 * Subkey generation algorithm
 * Round function
 
-We implemented the XTEA feistel algorithm:
-* Block size: 64 bits
-* Key size: 128 bits
-* Number of rounds: 64 Feistel rounds (32 cycles)
+We implemented the TEA, XTEA and XXTEA algorithms in Java
 
