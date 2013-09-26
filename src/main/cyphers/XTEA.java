@@ -42,11 +42,7 @@ public class XTEA extends FeistelCypher {
 		if (keybyte == null) {
 			throw new RuntimeException("No key");
 		} else if (keybyte.length < 16) {
-			byte[] newkey = new byte[16];
-			for (int i = 0; i < 16; i++) {
-				newkey[i] = keybyte[i % keybyte.length];
-			}
-			keybyte = newkey;
+			throw new RuntimeException("Key too short");
 		}
 
 		// Change bytes for ints

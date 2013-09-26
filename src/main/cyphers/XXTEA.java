@@ -10,9 +10,9 @@ import main.FeistelCypherType;
 public class XXTEA extends FeistelCypher {
 
 	/**
-	 * 32 cycles = 64 feistel rounds
+	 * in word (32bits)
 	 */
-	private int numCycles = 32;
+	private int blockSize = 4;
 
 	/**
 	 * 128 bits key, 4 integers
@@ -37,11 +37,12 @@ public class XXTEA extends FeistelCypher {
 		if (keybyte == null) {
 			throw new RuntimeException("No key");
 		} else if (keybyte.length < 16) {
-			byte[] newkey = new byte[16];
-			for (int i = 0; i < 16; i++) {
-				newkey[i] = keybyte[i % keybyte.length];
-			}
-			keybyte = newkey;
+			throw new RuntimeException("Key too short");
+//			byte[] newkey = new byte[16];
+//			for (int i = 0; i < 16; i++) {
+//				newkey[i] = keybyte[i % keybyte.length];
+//			}
+//			keybyte = newkey;
 		}
 
 		// Change bytes for ints
@@ -58,12 +59,12 @@ public class XXTEA extends FeistelCypher {
 	public byte[] encrypt(String plainText) {
 		byte[] text = plainText.getBytes();
 		int[] intText = byte2int(text);
-		if(intText.length < 2){
-			int[] aux = {intText[0],0};
+		if(intText.length < 4){
+			int[] aux = {intText[0],0,0,0};
 			intText = aux;
 		}
 		int sum, n, rounds, z, e, y, ind;
-		n = 2;
+		n = blockSize;
 		rounds = 6 + 52 / n;
 		z = intText[n - 1];
 		// v0 = intText[i];
@@ -88,7 +89,7 @@ public class XXTEA extends FeistelCypher {
 	public String decrypt(byte[] encondeMessage) {
 		int[] intText = byte2int(encondeMessage);
 		int sum, n, rounds, z, e, y, ind;
-		n = 2;
+		n = blockSize;
 		rounds = 6 + 52 / n;
 		sum = rounds * delta;
 		y = intText[0];
